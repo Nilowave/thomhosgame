@@ -26,7 +26,7 @@ APP.main = function() {
 	// deleteCookie('test')
 
 
-	console.log( getCookie('test') )
+	console.log( getCookie('skipintro') )
 	// APP.introActions('init');
 
 	// return;
@@ -42,7 +42,7 @@ APP.main = function() {
 	// APP.introActions("init");
 	// return;
 	
-	APP.socket = io.connect('http://192.168.2.1:8888');
+	APP.socket = io.connect('http://54.194.105.54:8888');
 
 	APP.socket.on('paired', function (data) {
 		$$('a')[0].dispose();
