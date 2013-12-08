@@ -56,6 +56,11 @@ APP.main = function() {
 	});
 	
 	APP.socket.on('ERROR', function (data) {
+		console.log('ERROR')
+		console.log(data)
+	});
+	APP.socket.on('connection', function (data) {
+		console.log('connection')
 		console.log(data)
 	});
 
