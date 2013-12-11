@@ -46,6 +46,7 @@ console.log('connect '+socket.id)
 		});
 
 		socket.on('client connect', function (data) { 
+			console.log(socketSessions)
 	    	if(socketSessions[data.id]) {
 		    	socketSessions[data.id].client = socket.id;
 		    	socket.join(data.id);
@@ -82,6 +83,10 @@ console.log('connect '+socket.id)
 		    } else {
 		    	socket.emit('ERROR', { msg: "none / wrong game ID: '" +data.id+"'" });
 		    }
+	    });
+
+	    socket.on("INTRO:startgame", function(data) {
+	    	websocket.sockets.in(data.id).emit('INTRO:startgame', {session:data.id});
 	    });
 
 	    socket.on("GAME", function(data) {
