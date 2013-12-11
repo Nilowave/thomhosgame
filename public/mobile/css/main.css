@@ -126,6 +126,7 @@ a {
 	font-family: Aldo;
 }
 
+#intro .cue_instructions a,
 #intro .init a {
 	width: 361px;
 	height: 135px;

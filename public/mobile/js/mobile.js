@@ -26,7 +26,7 @@ APP.main = function() {
 	// deleteCookie('test')
 
 
-	console.log( getCookie('skipintro') )
+	console.log( getCookie('test') )
 	// APP.introActions('init');
 
 	// return;
@@ -42,10 +42,10 @@ APP.main = function() {
 	// APP.introActions("init");
 	// return;
 	
-	APP.socket = io.connect('http://54.194.105.54:8888');
+	APP.socket = io.connect('http://192.168.2.1:8888');
 
 	APP.socket.on('paired', function (data) {
-		$$('a')[0].dispose();
+		$$('a.btnSet')[0].dispose();
 		APP.DATA = data;
 		APP.session = data.id
 		$('sessionID').set('value', "PAIRED");
@@ -55,12 +55,12 @@ APP.main = function() {
 
 	});
 	
-	APP.socket.on('ERROR', function (data) {
-		console.log('ERROR')
-		console.log(data)
-	});
 	APP.socket.on('connection', function (data) {
 		console.log('connection')
+		console.log(data)
+	});
+	APP.socket.on('ERROR', function (data) {
+		console.log('error')
 		console.log(data)
 	});
 
@@ -89,6 +89,7 @@ APP.main = function() {
 			APP.session = String( $('sessionID').get('value') ).toUpperCase();
 			console.log(APP.session)
 	        if(APP.session.length) {
+	        	$$('a.btnSet')[0].addClass('hide');
 				// APP.socket.emit('client connect', { id: APP.session });
 				APP.emit('client connect', { id: APP.session });
 			} else {
@@ -125,14 +126,39 @@ APP.introActions = function(msg) {
 			}).load();
 			break;
 
-		case "cue_one":
+		case "cue_pm":
+		console.log("cue_pm")
 			$$('#intro .init').addClass('hide');
-			$$('#intro .cue_1').removeClass('hide');
+			$$('#intro .cue').removeClass('hide');
+			$$('#intro .cue').addClass('hide');
+			$$('#intro .cue_pm').removeClass('hide');
 			break;
 
-		case "cue_two":
-			$$('#intro .cue_1').addClass('hide');
-			$$('#intro .cue_2').removeClass('hide');
+		case "cue_londoner":
+			$$('#intro .cue').removeClass('hide');
+			$$('#intro .cue').addClass('hide');
+			$$('#intro .cue_londoner').removeClass('hide');
+			break;
+
+		case "cue_ladiesman":
+			$$('#intro .cue').removeClass('hide');
+			$$('#intro .cue').addClass('hide');
+			$$('#intro .cue_ladiesman').removeClass('hide');
+			break;
+
+		case "cue_instructions":
+			$$('#intro .cue').removeClass('hide');
+			$$('#intro .cue').addClass('hide');
+			
+			$$('.cue_instructions').removeClass('hide');
+			
+			$$('.cue_instructions a')[0].addEvents({
+				'touchstart': function(e) {					
+					$$('.cue_instructions a.btn_start')[0].addClass('hide');
+					APP.emit('INTRO:startgame', { id: APP.session });
+				}
+			})
+
 			break;
 	}
 }
@@ -156,6 +182,7 @@ APP.intro = function() {
 	$$('#intro .init a').addEvents({
 		'touchstart': function(e){
 			e.stop();
+			$$('#intro .init a').dispose();
 			console.log(APP.session)
 			APP.emit('INTRO:start', { id: APP.session });
 		},
