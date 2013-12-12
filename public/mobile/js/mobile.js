@@ -42,8 +42,8 @@ APP.main = function() {
 	// APP.introActions("init");
 	// return;
 	
-	APP.socket = io.connect('http://192.168.2.1');
-	// APP.socket = io.connect('http://54.194.105.54');
+	// APP.socket = io.connect('http://192.168.2.1');
+	APP.socket = io.connect('http://thomhos.com');
 
 	APP.socket.on('paired', function (data) {
 		console.log('pairing success')
@@ -183,6 +183,7 @@ APP.gameActions = function(msg) {
 
 		case "init_special":
 			console.log('init_special');
+			$('specials').removeClass('hide');
 			break;
 	}
 }
@@ -234,6 +235,13 @@ APP.game = function() {
 
 	window.addEventListener("deviceorientation", APP.handleOrientation, true);
 
+
+	$$('.special_panel').addEvent('touchstart', function(e){
+		$('specials').addClass('hide');
+		var rel = this.get('rel');
+		APP.emit('GAME:do_special', { id: APP.session, special: rel });
+		// APP.Gestures.start();
+	});
 
 	$$('.panel').addEvents({
 		'touchstart': function() {
