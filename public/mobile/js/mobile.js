@@ -42,9 +42,11 @@ APP.main = function() {
 	// APP.introActions("init");
 	// return;
 	
-	APP.socket = io.connect('http://54.194.105.54:8888');
+	APP.socket = io.connect('http://192.168.2.1');
+	// APP.socket = io.connect('http://54.194.105.54');
 
 	APP.socket.on('paired', function (data) {
+		console.log('pairing success')
 		$$('a.btnSet')[0].dispose();
 		APP.DATA = data;
 		APP.session = data.id
@@ -67,6 +69,8 @@ APP.main = function() {
 	APP.socket.on('host not found', function () {
 		if ( !$('sessionID').hasClass('wrong'))
 			$('sessionID').addClass('wrong')
+
+		$$('a.btnSet')[0].removeClass('hide');
 		// alert("Oops... I think you made a mistake there friend.\nThere is no game that goes by that code.\nPLEASE try that again okay.");
 	});
 
@@ -90,6 +94,7 @@ APP.main = function() {
 			console.log(APP.session)
 	        if(APP.session.length) {
 	        	$$('a.btnSet')[0].addClass('hide');
+	        	console.log(APP.socket)
 				// APP.socket.emit('client connect', { id: APP.session });
 				APP.emit('client connect', { id: APP.session });
 			} else {
@@ -174,6 +179,10 @@ APP.gameActions = function(msg) {
 
 		case "start":
 			// console.log('game logics')
+			break;
+
+		case "init_special":
+			console.log('init_special');
 			break;
 	}
 }
