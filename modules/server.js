@@ -26,7 +26,7 @@ function start(route, handle) {
 
 	}
 
-	var httpserver = http.createServer(onRequest).listen(8888);
+	var httpserver = http.createServer(onRequest).listen(80);
 
   	websocket = io.listen(httpserver);
 
