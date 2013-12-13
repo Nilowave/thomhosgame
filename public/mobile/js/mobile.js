@@ -42,8 +42,8 @@ APP.main = function() {
 	// APP.introActions("init");
 	// return;
 	
-	// APP.socket = io.connect('http://192.168.2.1');
-	APP.socket = io.connect('http://thomhos.com');
+	APP.socket = io.connect('http://192.168.2.1');
+	// APP.socket = io.connect('http://thomhos.com');
 
 	APP.socket.on('paired', function (data) {
 		console.log('pairing success')
