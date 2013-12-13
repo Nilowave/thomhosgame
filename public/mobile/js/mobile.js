@@ -42,7 +42,8 @@ APP.main = function() {
 	// APP.introActions("init");
 	// return;
 	
-	APP.socket = io.connect('http://192.168.2.1:8888');
+	// APP.socket = io.connect('http://192.168.2.1');
+	APP.socket = io.connect('http://thomhos.com');
 
 	APP.socket.on('paired', function (data) {
 		console.log('pairing success')
@@ -168,6 +169,14 @@ APP.introActions = function(msg) {
 }
 
 APP.gameActions = function(msg) {
+/*
+	console.log('msg',msg)
+
+*/
+	console.log(msg)
+	var m = msg.split(";");
+	msg = m[0];
+	console.log(m[0])
 
 	switch(msg) {
 		case "init":
@@ -178,6 +187,15 @@ APP.gameActions = function(msg) {
 
 		case "start":
 			// console.log('game logics')
+			break;
+
+		case "init_special":
+			console.log("init_special")
+			$$('.special_panel').removeClass('disabled');
+			if( parseInt(m[1]) < 2 )
+				$$('.special_panel')[1].addClass('disabled');
+
+			$('specials').removeClass('hide');
 			break;
 	}
 }
@@ -229,6 +247,17 @@ APP.game = function() {
 
 	window.addEventListener("deviceorientation", APP.handleOrientation, true);
 
+
+	$$('.special_panel').addEvent('touchstart', function(e){
+		if(this.hasClass('disabled'))
+			return;
+		
+		$('specials').addClass('hide');
+		var rel = this.get('rel');
+		if(rel)
+		APP.emit('GAME:do_special', { id: APP.session, special: rel });
+		// APP.Gestures.start();
+	});
 
 	$$('.panel').addEvents({
 		'touchstart': function() {
